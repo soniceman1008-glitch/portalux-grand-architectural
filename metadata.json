@@ -1,0 +1,6 @@
+{
+  "name": "PORTALUX - Grand Architectural Entrances",
+  "description": "Bespoke architectural entrance door and window systems visualizer with 3D kinematic studio, volumetric lighting, custom millimeter sizing, smart glass privacy simulation, and international pricing in PKR, SAR, AUD, and USD.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
