@@ -1,18 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion } from 'motion/react';
-import { Contrast, Sparkles, DoorClosed, AppWindow } from 'lucide-react';
+import { Contrast } from 'lucide-react';
 import { Navbar } from './components/Navbar';
 import { SpotlightStudio } from './components/SpotlightStudio';
-import { SpecificationsDrawer } from './components/SpecificationsDrawer';
-import { WindowSystemsSection } from './components/WindowSystemsSection';
-import { CertificationSection } from './components/CertificationSection';
-import { ExploreBanner } from './components/ExploreBanner';
-import { ModernDoorsSection } from './components/ModernDoorsSection';
-import { GlobalProjectsSection } from './components/GlobalProjectsSection';
-import { FeaturesHotspotsSection } from './components/FeaturesHotspotsSection';
-import { FooterYellow } from './components/FooterYellow';
 import { MenuOverlay } from './components/MenuOverlay';
 import { CatalogueModal } from './components/CatalogueModal';
+
+const SpecificationsDrawer = lazy(() =>
+  import('./components/SpecificationsDrawer').then((m) => ({ default: m.SpecificationsDrawer }))
+);
+const WindowSystemsSection = lazy(() =>
+  import('./components/WindowSystemsSection').then((m) => ({ default: m.WindowSystemsSection }))
+);
+const CertificationSection = lazy(() =>
+  import('./components/CertificationSection').then((m) => ({ default: m.CertificationSection }))
+);
+const ExploreBanner = lazy(() =>
+  import('./components/ExploreBanner').then((m) => ({ default: m.ExploreBanner }))
+);
+const ModernDoorsSection = lazy(() =>
+  import('./components/ModernDoorsSection').then((m) => ({ default: m.ModernDoorsSection }))
+);
+const GlobalProjectsSection = lazy(() =>
+  import('./components/GlobalProjectsSection').then((m) => ({ default: m.GlobalProjectsSection }))
+);
+const FeaturesHotspotsSection = lazy(() =>
+  import('./components/FeaturesHotspotsSection').then((m) => ({ default: m.FeaturesHotspotsSection }))
+);
+const FooterYellow = lazy(() =>
+  import('./components/FooterYellow').then((m) => ({ default: m.FooterYellow }))
+);
 import { DOOR_MODELS, HANDLE_OPTIONS, STANDARD_SIZES } from './data/doors';
 import {
   WINDOW_MODELS,
@@ -219,92 +236,92 @@ export default function App() {
           onOpenQuote={() => scrollToSection('specifications')}
         />
 
-        <WindowSystemsSection
-          currency={currency}
-          onInspectWindowInStudio={handleInspectWindowInStudio}
-          onOpenCatalogue={() => setCatalogueOpen(true)}
-        />
-
-        <SpecificationsDrawer
-          category={productCategory}
-          model={currentDoorModel}
-          selectedColor={selectedColor}
-          onSelectColor={setSelectedColor}
-          standardSize={standardSize}
-          onSelectStandardSize={setStandardSize}
-          customWidth={customWidth}
-          customHeight={customHeight}
-          customEntrance={customEntrance}
-          isCustomSize={isCustomSize}
-          onUpdateCustomSize={(w, h, e) => {
-            setCustomWidth(w);
-            setCustomHeight(h);
-            setCustomEntrance(e);
-          }}
-          onToggleCustomSize={setIsCustomSize}
-          opening={opening}
-          onSelectOpening={setOpening}
-          handles={HANDLE_OPTIONS}
-          activeHandleId={activeHandleId}
-          onSelectHandle={setActiveHandleId}
-          windowModel={currentWindowModel}
-          selectedWindowColor={selectedWindowColor}
-          onSelectWindowColor={setSelectedWindowColor}
-          windowStandardSize={windowStandardSize}
-          onSelectWindowStandardSize={setWindowStandardSize}
-          customWindowWidth={customWindowWidth}
-          customWindowHeight={customWindowHeight}
-          isCustomWindowSize={isCustomWindowSize}
-          onUpdateCustomWindowSize={(w, h) => {
-            setCustomWindowWidth(w);
-            setCustomWindowHeight(h);
-          }}
-          onToggleCustomWindowSize={setIsCustomWindowSize}
-          windowHardwareList={WINDOW_HANDLE_OPTIONS}
-          activeWindowHardwareId={activeWindowHardwareId}
-          onSelectWindowHardware={setActiveWindowHardwareId}
-          selectedGlassTint={selectedGlassTint}
-          onSelectGlassTint={setSelectedGlassTint}
-          currency={currency}
-          unit={unit}
-        />
-
-        <CertificationSection />
-        <ExploreBanner onExploreClick={() => scrollToSection('projects')} />
-        <GlobalProjectsSection
-          onSelectDoorModelByName={(name) => {
-            const foundDoorIdx = DOOR_MODELS.findIndex((m) =>
-              name.toLowerCase().includes(m.name.toLowerCase())
-            );
-            if (foundDoorIdx >= 0) {
+        <Suspense fallback={<div className="min-h-[40vh] bg-[#07080a]" />}>
+          <WindowSystemsSection
+            currency={currency}
+            onInspectWindowInStudio={handleInspectWindowInStudio}
+            onOpenCatalogue={() => setCatalogueOpen(true)}
+          />
+          <SpecificationsDrawer
+            category={productCategory}
+            model={currentDoorModel}
+            selectedColor={selectedColor}
+            onSelectColor={setSelectedColor}
+            standardSize={standardSize}
+            onSelectStandardSize={setStandardSize}
+            customWidth={customWidth}
+            customHeight={customHeight}
+            customEntrance={customEntrance}
+            isCustomSize={isCustomSize}
+            onUpdateCustomSize={(w, h, e) => {
+              setCustomWidth(w);
+              setCustomHeight(h);
+              setCustomEntrance(e);
+            }}
+            onToggleCustomSize={setIsCustomSize}
+            opening={opening}
+            onSelectOpening={setOpening}
+            handles={HANDLE_OPTIONS}
+            activeHandleId={activeHandleId}
+            onSelectHandle={setActiveHandleId}
+            windowModel={currentWindowModel}
+            selectedWindowColor={selectedWindowColor}
+            onSelectWindowColor={setSelectedWindowColor}
+            windowStandardSize={windowStandardSize}
+            onSelectWindowStandardSize={setWindowStandardSize}
+            customWindowWidth={customWindowWidth}
+            customWindowHeight={customWindowHeight}
+            isCustomWindowSize={isCustomWindowSize}
+            onUpdateCustomWindowSize={(w, h) => {
+              setCustomWindowWidth(w);
+              setCustomWindowHeight(h);
+            }}
+            onToggleCustomWindowSize={setIsCustomWindowSize}
+            windowHardwareList={WINDOW_HANDLE_OPTIONS}
+            activeWindowHardwareId={activeWindowHardwareId}
+            onSelectWindowHardware={setActiveWindowHardwareId}
+            selectedGlassTint={selectedGlassTint}
+            onSelectGlassTint={setSelectedGlassTint}
+            currency={currency}
+            unit={unit}
+          />
+          <CertificationSection />
+          <ExploreBanner onExploreClick={() => scrollToSection('projects')} />
+          <GlobalProjectsSection
+            onSelectDoorModelByName={(name) => {
+              const foundDoorIdx = DOOR_MODELS.findIndex((m) =>
+                name.toLowerCase().includes(m.name.toLowerCase())
+              );
+              if (foundDoorIdx >= 0) {
+                setProductCategory('doors');
+                handleSelectDoorIndex(foundDoorIdx);
+                scrollToSection('studio');
+                return;
+              }
+              const foundWindowIdx = WINDOW_MODELS.findIndex((w) =>
+                name.toLowerCase().includes(w.name.toLowerCase())
+              );
+              if (foundWindowIdx >= 0) {
+                setProductCategory('windows');
+                handleSelectWindowIndex(foundWindowIdx);
+                scrollToSection('studio');
+              }
+            }}
+          />
+          <ModernDoorsSection
+            onOpenCatalogue={() => setCatalogueOpen(true)}
+            onScrollToStudio={() => {
               setProductCategory('doors');
-              handleSelectDoorIndex(foundDoorIdx);
               scrollToSection('studio');
-              return;
-            }
-            const foundWindowIdx = WINDOW_MODELS.findIndex((w) =>
-              name.toLowerCase().includes(w.name.toLowerCase())
-            );
-            if (foundWindowIdx >= 0) {
-              setProductCategory('windows');
-              handleSelectWindowIndex(foundWindowIdx);
-              scrollToSection('studio');
-            }
-          }}
-        />
-        <ModernDoorsSection
-          onOpenCatalogue={() => setCatalogueOpen(true)}
-          onScrollToStudio={() => {
-            setProductCategory('doors');
-            scrollToSection('studio');
-          }}
-        />
-        <FeaturesHotspotsSection />
-        <FooterYellow
-          onScrollToStudio={() => scrollToSection('studio')}
-          onScrollToQuote={() => scrollToSection('specifications')}
-          onOpenCatalogue={() => setCatalogueOpen(true)}
-        />
+            }}
+          />
+          <FeaturesHotspotsSection />
+          <FooterYellow
+            onScrollToStudio={() => scrollToSection('studio')}
+            onScrollToQuote={() => scrollToSection('specifications')}
+            onOpenCatalogue={() => setCatalogueOpen(true)}
+          />
+        </Suspense>
       </main>
 
       <MenuOverlay
