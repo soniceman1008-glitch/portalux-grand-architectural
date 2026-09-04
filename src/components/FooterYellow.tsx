@@ -84,21 +84,17 @@ export const FooterYellow: React.FC<FooterYellowProps> = ({
   return (
     <footer id="footer-contact" className="relative bg-[#e4ff3a] text-black pt-16 pb-12 px-4 sm:px-6 lg:px-8 select-none">
       <div className="max-w-4xl mx-auto">
-        {/* Top Callout Box */}
         <div className="text-center mb-12">
           <h2 className="font-heading text-5xl sm:text-7xl font-extrabold tracking-tight text-black uppercase leading-none">
             WHY CHOOSE PORTALUX?
           </h2>
-
           <p className="text-zinc-900 font-medium text-base sm:text-lg max-w-xl mx-auto mt-4 leading-snug">
             Choose PORTALUX for handcrafted architectural entrance doors that unite classical heritage,
             impenetrable multi-point security, and timeless modern beauty.
           </p>
-
-          {/* Action Buttons matching video (dark capsules with yellow icons) */}
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
-            {/* GET A QUOTE */}
             <button
+              type="button"
               onClick={() => {
                 sound.playClick();
                 onScrollToQuote();
@@ -110,9 +106,20 @@ export const FooterYellow: React.FC<FooterYellowProps> = ({
               </div>
               <span>GET A QUOTE</span>
             </button>
-
-            {/* EXPLORE DOORS */}
+            <a
+              href="https://api.whatsapp.com/send?text=PORTALUX%20Grand%20Architectural%0Ahttps://portalux-original.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => sound.playClick()}
+              className="px-8 py-3.5 rounded-full bg-black hover:bg-zinc-800 text-white font-heading text-xl sm:text-2xl tracking-wider uppercase transition-all duration-200 cursor-pointer shadow-xl flex items-center gap-3 active:scale-95"
+            >
+              <div className="w-6 h-6 rounded-full bg-[#e4ff3a] text-black flex items-center justify-center font-bold">
+                ↗
+              </div>
+              <span>WhatsApp</span>
+            </a>
             <button
+              type="button"
               onClick={() => {
                 sound.playClick();
                 onScrollToStudio();
@@ -125,8 +132,6 @@ export const FooterYellow: React.FC<FooterYellowProps> = ({
               <span>EXPLORE DOORS</span>
             </button>
           </div>
-
-          {/* Social Icons row matching video */}
           <div className="flex items-center justify-center gap-4 mt-8">
             {['f', 'X', 'O', 'in'].map((soc, idx) => (
               <a
@@ -143,14 +148,13 @@ export const FooterYellow: React.FC<FooterYellowProps> = ({
             ))}
           </div>
         </div>
-
-        {/* Accordion Menu List (Exact replica from video) */}
         <div className="border-t-2 border-b-2 border-black divide-y-2 divide-black mb-12">
           {navSections.map((sec) => {
             const isOpen = openAccordion === sec.id;
             return (
               <div key={sec.id} className="py-2">
                 <button
+                  type="button"
                   onClick={() => toggleAccordion(sec.id)}
                   className="w-full py-4 flex items-center justify-between font-heading text-3xl sm:text-4xl tracking-wide hover:opacity-80 transition-opacity cursor-pointer text-left"
                 >
@@ -162,7 +166,6 @@ export const FooterYellow: React.FC<FooterYellowProps> = ({
                     {isOpen ? <Minus className="w-6 h-6 stroke-[3]" /> : <Plus className="w-6 h-6 stroke-[3]" />}
                   </div>
                 </button>
-
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
@@ -191,27 +194,20 @@ export const FooterYellow: React.FC<FooterYellowProps> = ({
             );
           })}
         </div>
-
-        {/* Contact Info & Showroom Details matching video */}
         <div className="text-center space-y-4 mb-10">
           <div className="space-y-2">
-            <h3 className="font-heading text-2xl tracking-wider uppercase text-black">
-              Contact Info
-            </h3>
+            <h3 className="font-heading text-2xl tracking-wider uppercase text-black">Contact Info</h3>
             <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-bold font-mono">
-              <a
-                href="tel:1800840366"
-                className="flex items-center gap-1.5 hover:underline"
-              >
+              <a href="tel:1800840366" className="flex items-center gap-1.5 hover:underline">
                 <Phone className="w-4 h-4" />
                 <span>1800 840 366</span>
               </a>
-              <a
-                href="mailto:concierge@portalux.design"
-                className="flex items-center gap-1.5 hover:underline"
-              >
+              <a href="mailto:concierge@portalux.design" className="flex items-center gap-1.5 hover:underline">
                 <Mail className="w-4 h-4" />
                 <span>concierge@portalux.design</span>
+              </a>
+              <a href="https://api.whatsapp.com/send?text=PORTALUX%20Grand%20Architectural%0Ahttps://portalux-original.vercel.app/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline">
+                <span>WhatsApp</span>
               </a>
             </div>
             <p className="flex items-center justify-center gap-1.5 text-sm font-semibold text-zinc-900">
@@ -219,46 +215,28 @@ export const FooterYellow: React.FC<FooterYellowProps> = ({
               <span>490 Architecture Quarter, Design Precinct</span>
             </p>
           </div>
-
-          {/* OPENING HOURS box */}
           <div className="border-t border-black/30 pt-6 mt-6 max-w-sm mx-auto">
             <h4 className="font-heading text-xl tracking-wider uppercase text-black mb-2 flex items-center justify-center gap-2">
               <Clock className="w-4 h-4" />
               <span>OPENING HOURS</span>
             </h4>
             <div className="text-xs font-mono font-bold space-y-1 text-zinc-900">
-              <div className="flex justify-between">
-                <span>MON-FRI</span>
-                <span>09:00am-05:00pm</span>
-              </div>
-              <div className="flex justify-between">
-                <span>SAT</span>
-                <span>10:00am-03:00pm</span>
-              </div>
-              <div className="text-center italic text-zinc-800 pt-1">
-                Private Showroom Appointments Available
-              </div>
+              <div className="flex justify-between"><span>MON-FRI</span><span>09:00am-05:00pm</span></div>
+              <div className="flex justify-between"><span>SAT</span><span>10:00am-03:00pm</span></div>
+              <div className="text-center italic text-zinc-800 pt-1">Private Showroom Appointments Available</div>
             </div>
           </div>
         </div>
-
-        {/* Footer Legal & Copyright */}
         <div className="border-t-2 border-black pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono font-bold text-zinc-900">
           <div className="flex items-center gap-4">
             <a href="#top" className="hover:underline">PRIVACY POLICY</a>
             <span>•</span>
             <a href="#top" className="hover:underline">WARRANTY TERMS</a>
           </div>
-
-          <div>
-            © 2025 PORTALUX GRAND ENTRANCES. ALL RIGHTS RESERVED.
-          </div>
-
+          <div>© 2025 PORTALUX GRAND ENTRANCES. ALL RIGHTS RESERVED.</div>
           <div className="flex items-center gap-1.5">
             <span>DESIGNED BY</span>
-            <span className="bg-black text-[#e4ff3a] px-2 py-0.5 rounded font-heading text-sm">
-              PORTALUX ATELIER
-            </span>
+            <span className="bg-black text-[#e4ff3a] px-2 py-0.5 rounded font-heading text-sm">PORTALUX ATELIER</span>
           </div>
         </div>
       </div>
