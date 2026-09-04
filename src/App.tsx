@@ -31,10 +31,8 @@ import { CONTRAST_THEMES } from './data/contrastThemes';
 import { sound } from './utils/sound';
 
 export default function App() {
-  // Category state (Doors or Windows)
   const [productCategory, setProductCategory] = useState<ProductCategory>('doors');
 
-  // Doors state
   const [activeModelIndex, setActiveModelIndex] = useState(0);
   const currentDoorModel = DOOR_MODELS[activeModelIndex];
   const [selectedColor, setSelectedColor] = useState(currentDoorModel.primaryColor);
@@ -47,7 +45,6 @@ export default function App() {
   const [activeHandleId, setActiveHandleId] = useState(HANDLE_OPTIONS[0].id);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Windows state
   const [activeWindowIndex, setActiveWindowIndex] = useState(0);
   const currentWindowModel = WINDOW_MODELS[activeWindowIndex];
   const [selectedWindowColor, setSelectedWindowColor] = useState(currentWindowModel.primaryColor);
@@ -59,43 +56,43 @@ export default function App() {
   const [selectedGlassTint, setSelectedGlassTint] = useState<GlassTint>('clear-lowe');
   const [windowIsOpen, setWindowIsOpen] = useState(false);
 
-  // Lighting & view
   const [lightIntensity, setLightIntensity] = useState(85);
 
-  // Color Contrast State
+  const readStore = (key: string) => {
+    try { return localStorage.getItem(key); } catch { return null; }
+  };
+  const writeStore = (key: string, value: string) => {
+    try { localStorage.setItem(key, value); } catch { /* private mode */ }
+  };
+
   const [contrastMode, setContrastMode] = useState<ContrastMode>(() => {
-    return (localStorage.getItem('portalux_contrast') as ContrastMode) || 'high-dark';
+    return (readStore('portalux_contrast') as ContrastMode) || 'high-dark';
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-contrast', contrastMode);
-    localStorage.setItem('portalux_contrast', contrastMode);
+    writeStore('portalux_contrast', contrastMode);
   }, [contrastMode]);
 
-  // Global international preferences (AUD, USD, EUR, GBP, PKR, SAR)
   const [currency, setCurrency] = useState<CurrencyCode>(() => {
-    const saved = localStorage.getItem('portalux_currency') as CurrencyCode;
+    const saved = readStore('portalux_currency') as CurrencyCode;
     return saved && ['AUD', 'USD', 'EUR', 'GBP', 'PKR', 'SAR'].includes(saved) ? saved : 'AUD';
   });
 
   useEffect(() => {
-    localStorage.setItem('portalux_currency', currency);
+    writeStore('portalux_currency', currency);
   }, [currency]);
 
   const [unit, setUnit] = useState<UnitSystem>('metric');
-
-  // Sound and Modals
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [catalogueOpen, setCatalogueOpen] = useState(false);
 
-  // When door model changes, update primary color
   const handleSelectDoorIndex = (index: number) => {
     setActiveModelIndex(index);
     setSelectedColor(DOOR_MODELS[index].primaryColor);
   };
 
-  // When window model changes, update primary color
   const handleSelectWindowIndex = (index: number) => {
     setActiveWindowIndex(index);
     setSelectedWindowColor(WINDOW_MODELS[index].primaryColor);
@@ -110,55 +107,45 @@ export default function App() {
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Open a specific window directly in the 3D studio
   const handleInspectWindowInStudio = (index: number) => {
     setProductCategory('windows');
     handleSelectWindowIndex(index);
     scrollToSection('studio');
   };
 
-  // Keyboard navigation for studio
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't intercept when user is typing in form inputs
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) {
         return;
       }
-
       if (e.key === 'ArrowRight') {
         sound.playClick();
         if (productCategory === 'doors') {
-          setActiveModelIndex((prev) => (prev + 1) % DOOR_MODELS.length);
+          handleSelectDoorIndex((activeModelIndex + 1) % DOOR_MODELS.length);
         } else {
-          setActiveWindowIndex((prev) => (prev + 1) % WINDOW_MODELS.length);
+          handleSelectWindowIndex((activeWindowIndex + 1) % WINDOW_MODELS.length);
         }
       } else if (e.key === 'ArrowLeft') {
         sound.playClick();
         if (productCategory === 'doors') {
-          setActiveModelIndex((prev) => (prev - 1 + DOOR_MODELS.length) % DOOR_MODELS.length);
+          handleSelectDoorIndex((activeModelIndex - 1 + DOOR_MODELS.length) % DOOR_MODELS.length);
         } else {
-          setActiveWindowIndex((prev) => (prev - 1 + WINDOW_MODELS.length) % WINDOW_MODELS.length);
+          handleSelectWindowIndex((activeWindowIndex - 1 + WINDOW_MODELS.length) % WINDOW_MODELS.length);
         }
       } else if (e.key === ' ' || e.key === 'Enter') {
         if (document.activeElement === document.body) {
           e.preventDefault();
-          if (productCategory === 'doors') {
-            setIsOpen((prev) => !prev);
-          } else {
-            setWindowIsOpen((prev) => !prev);
-          }
+          if (productCategory === 'doors') setIsOpen((prev) => !prev);
+          else setWindowIsOpen((prev) => !prev);
         }
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [productCategory]);
+  }, [productCategory, activeModelIndex, activeWindowIndex]);
 
   const activeHandle =
     HANDLE_OPTIONS.find((h) => h.id === activeHandleId) || HANDLE_OPTIONS[0];
@@ -168,7 +155,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#07080a] text-zinc-100 flex flex-col font-sans selection:bg-[#e4ff3a] selection:text-black">
-      {/* Top Fixed Header */}
       <Navbar
         onOpenMenu={() => setMenuOpen(true)}
         onOpenCatalogue={() => setCatalogueOpen(true)}
@@ -183,9 +169,7 @@ export default function App() {
         onChangeContrastMode={setContrastMode}
       />
 
-      {/* Main Content Sections */}
       <main className="flex-1">
-        {/* Initial Hero Facade Banner */}
         <section
           id="top"
           className="relative pt-24 pb-6 bg-[#07080a] text-center px-4 overflow-hidden border-b border-zinc-900"
@@ -206,7 +190,6 @@ export default function App() {
           </motion.div>
         </section>
 
-        {/* 3D Spotlight Studio (Supports Doors & Windows with interactive 3D mechanisms) */}
         <SpotlightStudio
           category={productCategory}
           onSelectCategory={setProductCategory}
@@ -236,14 +219,12 @@ export default function App() {
           onOpenQuote={() => scrollToSection('specifications')}
         />
 
-        {/* Dedicated High-Performance Architectural Windows & Glazing Section */}
         <WindowSystemsSection
           currency={currency}
           onInspectWindowInStudio={handleInspectWindowInStudio}
           onOpenCatalogue={() => setCatalogueOpen(true)}
         />
 
-        {/* Interactive Specifications & Custom Quote Drawer / Configurator (Adapts to Doors or Windows) */}
         <SpecificationsDrawer
           category={productCategory}
           model={currentDoorModel}
@@ -288,13 +269,8 @@ export default function App() {
           unit={unit}
         />
 
-        {/* International Accreditations & Lab Benchmarks */}
         <CertificationSection />
-
-        {/* Transition "WANNA SEE MORE? EXPLORE DOORS" Banner */}
         <ExploreBanner onExploreClick={() => scrollToSection('projects')} />
-
-        {/* Global Installations Architectural Portfolio */}
         <GlobalProjectsSection
           onSelectDoorModelByName={(name) => {
             const foundDoorIdx = DOOR_MODELS.findIndex((m) =>
@@ -306,7 +282,6 @@ export default function App() {
               scrollToSection('studio');
               return;
             }
-
             const foundWindowIdx = WINDOW_MODELS.findIndex((w) =>
               name.toLowerCase().includes(w.name.toLowerCase())
             );
@@ -317,8 +292,6 @@ export default function App() {
             }
           }}
         />
-
-        {/* Modern Contemporary Doors Architectural Section */}
         <ModernDoorsSection
           onOpenCatalogue={() => setCatalogueOpen(true)}
           onScrollToStudio={() => {
@@ -326,11 +299,7 @@ export default function App() {
             scrollToSection('studio');
           }}
         />
-
-        {/* Features & Interactive Anatomy Hotspots */}
         <FeaturesHotspotsSection />
-
-        {/* High-Voltage Electric Yellow Footer */}
         <FooterYellow
           onScrollToStudio={() => scrollToSection('studio')}
           onScrollToQuote={() => scrollToSection('specifications')}
@@ -338,16 +307,12 @@ export default function App() {
         />
       </main>
 
-      {/* Slide-in Full Menu Overlay */}
       <MenuOverlay
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
         onSelectSection={(target) => {
-          if (target === 'windows') {
-            scrollToSection('windows');
-          } else {
-            scrollToSection(target);
-          }
+          if (target === 'windows') scrollToSection('windows');
+          else scrollToSection(target);
         }}
         currency={currency}
         onChangeCurrency={setCurrency}
@@ -355,7 +320,6 @@ export default function App() {
         onChangeContrastMode={setContrastMode}
       />
 
-      {/* Catalogue & Brochure Modal with Doors & Windows */}
       <CatalogueModal
         isOpen={catalogueOpen}
         onClose={() => setCatalogueOpen(false)}
@@ -372,7 +336,6 @@ export default function App() {
         }}
       />
 
-      {/* Floating High-Contrast Color Theme Quick Switcher Pill (Bottom Left) */}
       <div className="fixed bottom-4 left-4 z-40 hidden sm:flex items-center gap-2 p-1.5 rounded-full bg-zinc-950/95 border border-zinc-700/80 backdrop-blur-xl shadow-2xl font-mono text-xs">
         <div className="flex items-center gap-1.5 pl-2 pr-1.5 text-zinc-300 font-bold border-r border-zinc-800">
           <Contrast className="w-3.5 h-3.5 text-[#e4ff3a]" />
@@ -390,9 +353,7 @@ export default function App() {
                 }}
                 title={`${theme.label} — ${theme.hint}`}
                 className={`w-4 h-4 rounded-full cursor-pointer transition-all duration-150 flex items-center justify-center relative ${
-                  active
-                    ? 'ring-2 ring-white scale-125 shadow-lg z-10'
-                    : 'opacity-60 hover:opacity-100 hover:scale-110'
+                  active ? 'ring-2 ring-white scale-125 shadow-lg z-10' : 'opacity-60 hover:opacity-100 hover:scale-110'
                 }`}
                 style={{ backgroundColor: theme.color }}
               />
