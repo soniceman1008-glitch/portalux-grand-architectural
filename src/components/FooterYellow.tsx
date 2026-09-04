@@ -47,7 +47,7 @@ export const FooterYellow: React.FC<FooterYellowProps> = ({
       items: [
         { label: 'Australian Architectural Heritage', action: onScrollToStudio },
         { label: '3mm Heavy-Gauge Aluminium Engineering', action: onScrollToStudio },
-        { label: 'Melbourne Flagship Richmond Showroom', action: () => {} },
+        { label: 'Melbourne Flagship Richmond Showroom', action: onScrollToQuote },
       ],
     },
     {
@@ -132,21 +132,6 @@ export const FooterYellow: React.FC<FooterYellowProps> = ({
               <span>EXPLORE DOORS</span>
             </button>
           </div>
-          <div className="flex items-center justify-center gap-4 mt-8">
-            {['f', 'X', 'O', 'in'].map((soc, idx) => (
-              <a
-                key={idx}
-                href="#top"
-                onClick={(e) => {
-                  e.preventDefault();
-                  sound.playClick();
-                }}
-                className="w-11 h-11 rounded-xl bg-black/10 hover:bg-black text-black hover:text-[#e4ff3a] border border-black/20 flex items-center justify-center font-bold font-mono text-sm transition-all duration-200 cursor-pointer"
-              >
-                {soc}
-              </a>
-            ))}
-          </div>
         </div>
         <div className="border-t-2 border-b-2 border-black divide-y-2 divide-black mb-12">
           {navSections.map((sec) => {
@@ -227,13 +212,31 @@ export const FooterYellow: React.FC<FooterYellowProps> = ({
             </div>
           </div>
         </div>
+
+        <div className="grid sm:grid-cols-2 gap-6 mb-10 text-left text-xs sm:text-sm text-zinc-900 leading-relaxed">
+          <section id="privacy">
+            <h3 className="font-heading text-2xl tracking-wider uppercase text-black mb-2">Privacy Policy</h3>
+            <p>
+              Quote requests (name, email, phone, project notes) are used only to prepare a specification reply.
+              We do not sell contact details. Currency and theme preferences stay in your browser.
+            </p>
+          </section>
+          <section id="warranty">
+            <h3 className="font-heading text-2xl tracking-wider uppercase text-black mb-2">Warranty Terms</h3>
+            <p>
+              PORTALUX entrance systems carry a 15-year atelier engineering guarantee on structure, finish and hardware,
+              subject to marine-grade care and professional installation. Full terms are issued with every specification pack.
+            </p>
+          </section>
+        </div>
+
         <div className="border-t-2 border-black pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono font-bold text-zinc-900">
           <div className="flex items-center gap-4">
-            <a href="#top" className="hover:underline">PRIVACY POLICY</a>
+            <a href="#privacy" className="hover:underline">PRIVACY POLICY</a>
             <span>•</span>
-            <a href="#top" className="hover:underline">WARRANTY TERMS</a>
+            <a href="#warranty" className="hover:underline">WARRANTY TERMS</a>
           </div>
-          <div>© 2025 PORTALUX GRAND ENTRANCES. ALL RIGHTS RESERVED.</div>
+          <div>© 2026 PORTALUX GRAND ENTRANCES. ALL RIGHTS RESERVED.</div>
           <div className="flex items-center gap-1.5">
             <span>DESIGNED BY</span>
             <span className="bg-black text-[#e4ff3a] px-2 py-0.5 rounded font-heading text-sm">PORTALUX ATELIER</span>
