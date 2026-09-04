@@ -18,9 +18,7 @@ export const ModernDoorsSection: React.FC<ModernDoorsSectionProps> = ({
   return (
     <section id="modern-doors" className="relative bg-[#ffffff] text-[#121417] py-20 px-4 sm:px-6 lg:px-8 overflow-hidden select-none">
       <div className="max-w-6xl mx-auto">
-        {/* Architectural Villa Showcase Cards from Video */}
         <div className="relative mb-16">
-          {/* Main Primary Modern House Image */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -32,12 +30,11 @@ export const ModernDoorsSection: React.FC<ModernDoorsSectionProps> = ({
               src={villaImg}
               alt="Contemporary Modern Architecture with Bespoke Aluminium Entrance"
               className="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
               referrerPolicy="no-referrer"
             />
-            {/* Subtle architectural overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
-
-            {/* Badges on image */}
             <div className="absolute bottom-6 left-6 text-white">
               <span className="text-xs font-mono uppercase tracking-widest bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
                 Toorak Pavilion Residence • Custom Brighton System
@@ -45,7 +42,6 @@ export const ModernDoorsSection: React.FC<ModernDoorsSectionProps> = ({
             </div>
           </motion.div>
 
-          {/* Floating Detail Thumbnail 1 (Top Right matching video layout) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, x: 20 }}
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
@@ -57,6 +53,8 @@ export const ModernDoorsSection: React.FC<ModernDoorsSectionProps> = ({
               src={detailImg}
               alt="Aluminium Door Facade Detail"
               className="w-full h-36 object-cover"
+              loading="lazy"
+              decoding="async"
               referrerPolicy="no-referrer"
             />
             <div className="p-2.5 bg-zinc-900 text-white flex items-center justify-between">
@@ -65,7 +63,6 @@ export const ModernDoorsSection: React.FC<ModernDoorsSectionProps> = ({
             </div>
           </motion.div>
 
-          {/* Floating Detail Thumbnail 2 (Bottom Left matching video layout) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, x: -20 }}
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
@@ -85,7 +82,6 @@ export const ModernDoorsSection: React.FC<ModernDoorsSectionProps> = ({
           </motion.div>
         </div>
 
-        {/* Text & Content matching video */}
         <div className="text-center max-w-3xl mx-auto pt-6">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -108,7 +104,6 @@ export const ModernDoorsSection: React.FC<ModernDoorsSectionProps> = ({
             and unmatched quality to every entrance, ensuring your home exudes prestige and security.
           </motion.p>
 
-          {/* Action Buttons matching video layout */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -116,8 +111,8 @@ export const ModernDoorsSection: React.FC<ModernDoorsSectionProps> = ({
             transition={{ delay: 0.2 }}
             className="mt-8 flex flex-wrap items-center justify-center gap-4"
           >
-            {/* LEARN MORE Button */}
             <button
+              type="button"
               onClick={() => {
                 sound.playClick();
                 onScrollToStudio();
@@ -126,9 +121,8 @@ export const ModernDoorsSection: React.FC<ModernDoorsSectionProps> = ({
             >
               <span>LEARN MORE</span>
             </button>
-
-            {/* CATALOGUE Button (Electric Yellow pill from video) */}
             <button
+              type="button"
               onClick={() => {
                 sound.playClick();
                 onOpenCatalogue();
